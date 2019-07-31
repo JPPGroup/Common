@@ -2,7 +2,7 @@
 # Build and run tests for .NET Desktop or Windows classic desktop solutions.
 # Add steps that publish symbols, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
-name: $(Common)$(rev:.r)
+name: $(common)$(rev:.r)
 
 trigger:
 - master
@@ -11,9 +11,11 @@ pool:
   vmImage: 'Ubuntu-16.04'
 
 variables:  
-  group: Versions
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
+- group: versions
+- name: buildPlatform
+  value: 'Any CPU'
+- name: buildConfiguration
+  value: 'Release'
 
 steps:
 - task: DotNetCoreCLI@2
