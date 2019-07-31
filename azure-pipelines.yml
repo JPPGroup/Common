@@ -8,9 +8,10 @@ trigger:
 - master
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'Ubuntu-16.04'
 
 variables:  
+  group: Versions
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
