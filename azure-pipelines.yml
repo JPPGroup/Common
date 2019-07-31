@@ -20,7 +20,7 @@ variables:
 steps:
 - task: DotNetCoreCLI@2
   inputs:
-    command: 'pack'
+    command: 'build'
     packagesToPack: '**/*.csproj'
     versioningScheme: 'byBuildNumber'
 
