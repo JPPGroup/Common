@@ -14,24 +14,13 @@ variables:
 - group: versions
 - name: buildPlatform
   value: 'Any CPU'
-- name: buildConfiguration
+- name: BuildConfiguration
   value: 'Release'
 
 steps:
 - task: DotNetCoreCLI@2
   inputs:
-    command: 'restore'
-    projects: '**/*.csproj'
-    feedsToUse: 'select'
-    noCache: true
-
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'build'
-    projects: '**/*.csproj'
-
-- task: DotNetCoreCLI@2
-  inputs:
     command: 'pack'
     packagesToPack: '**/*.csproj'
     versioningScheme: 'byBuildNumber'
+
