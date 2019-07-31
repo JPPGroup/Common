@@ -22,5 +22,5 @@ steps:
   inputs:
     command: 'build'
     projects: '**/*.csproj'
-    versioningScheme: 'byBuildNumber'
+    arguments: '/p:Configuration=$(BuildConfiguration) /p:$(BuildNumber)'
 
