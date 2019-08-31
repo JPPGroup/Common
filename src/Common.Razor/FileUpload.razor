@@ -1,0 +1,16 @@
+﻿@using Microsoft.JSInterop
+@using Jpp.Common.Razor;
+@inherits FileUploadBase;
+
+<h3>FileUpload</h3>
+
+<input type="file" @onchange="UploadFile" id="fileUploadPicker" disabled="@Uploading"/>
+<br />
+<div hidden="@NotUploading">
+    <progress max="100" value="@ProgressPercentage"></progress>
+</div>
+<br />
+@if (UploadComplete)
+{
+<p>File successfully uploaded.</p>
+}
