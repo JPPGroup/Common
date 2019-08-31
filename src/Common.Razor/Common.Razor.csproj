@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RazorLangVersion>3.0</RazorLangVersion>
+    <RootNamespace>Jpp.Common.Razor</RootNamespace>
+    <PackageId>Jpp.Common.Razor</PackageId>
+    <Authors>JPP Consulting</Authors>
+    <Company>JPP Consulting</Company>
+    <Product>Common Razor Library</Product>
+    <Description>Common Razor Library containg re-useable razor components</Description>
+    <RepositoryUrl>https://github.com/JPPGroup/Common</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.0.0-preview8.19405.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.0.0-preview8.19405.7" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+</Project>
