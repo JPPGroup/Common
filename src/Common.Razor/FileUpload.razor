@@ -2,15 +2,28 @@
 @using Jpp.Common.Razor;
 @inherits FileUploadBase;
 
-<h3>FileUpload</h3>
+<h4>Upload File</h4>
 
-<input type="file" @onchange="UploadFile" id="fileUploadPicker" disabled="@Uploading"/>
+<input type="file" @onchange="FileChanged" id="fileUploadPicker" disabled="@Uploading" />
 <br />
-<div hidden="@NotUploading">
-    <progress max="100" value="@ProgressPercentage"></progress>
+<div hidden="@UploadButtonHidden" style="padding-top: 18px;">
+    <button @onclick="UploadFile">Upload</button>
 </div>
-<br />
+<div hidden="@NotUploading" style="padding-top: 18px;">
+    <progress max="100" value="@ProgressPercentage"></progress>
+    <button @onclick="Cancel">Cancel</button>
+    @if (!Paused)
+    {
+        <button @onclick="Pause">Pause</button>
+    }
+    else
+    {
+        <button @onclick="Resume">Resume</button>
+    }
+</div>
 @if (UploadComplete)
 {
-<p>File successfully uploaded.</p>
+    <div style="padding-top: 18px;">
+        <p>File successfully uploaded.</p>
+    </div>
 }

@@ -21,3 +21,7 @@ async function getSlice(fileInput, start, end) {
     
     });
 };
+
+function clearInput(fileInput) {
+    document.getElementById(fileInput).value = '';
+};
