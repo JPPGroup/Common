@@ -5,7 +5,7 @@
     <RootNamespace>Jpp.Common</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>Jpp.Common</PackageId>
-    <Authors />
+    <Authors>JPP Consulting</Authors>
     <Company>JPP Consulting</Company>
     <Product>Common Code Library</Product>
     <Description>Common Code Library containg re-useable helper classes</Description>
