@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,13 +8,13 @@ namespace Jpp.Common.Razor
 {
     public class FileUploadBase : ComponentBase
     {
-        public const int BufferSize = 4096;
+        public const int BUFFER_SIZE = 4096;
 
         [Parameter]
         public byte[] File { get; set; }
 
-        [Parameter] 
-        protected EventCallback<byte[]> OnUpload { get; set; }
+        [Parameter]
+        public EventCallback<byte[]> OnUpload { get; set; }
 
         [Inject]
         public IJSRuntime Runtime { get; set; }
@@ -35,8 +32,8 @@ namespace Jpp.Common.Razor
 
         public bool UploadButtonHidden { get; set; } = true;
 
-        private CancellationTokenSource cts;
-        private CancellationToken ct;
+        private CancellationTokenSource _cts;
+        private CancellationToken _ct;
 
         private int _currentByte, _fileSize;
 
@@ -48,7 +45,7 @@ namespace Jpp.Common.Razor
         {
             UploadButtonHidden = true;
             UploadComplete = false;
-            cts = new CancellationTokenSource();
+            _cts = new CancellationTokenSource();
             _fileSize = await Runtime.InvokeAsync<int>("getFileSize", "fileUploadPicker");
             File = new byte[_fileSize];
             _currentByte = 0;
@@ -60,51 +57,36 @@ namespace Jpp.Common.Razor
         public void Pause()
         {
             Paused = true;
-            cts.Cancel();
+            _cts.Cancel();
         }
 
         public void Resume()
         {
             Paused = false;
-            cts = new CancellationTokenSource();
+            _cts = new CancellationTokenSource();
             Upload();
         }
 
         public async void Cancel()
         {
-            cts.Cancel();
+            _cts.Cancel();
             Uploading = false;
             await Runtime.InvokeAsync<object>("clearInput", "fileUploadPicker");
         }
 
         private void Upload()
         {
-            ct = cts.Token;
+            _ct = _cts.Token;
             Task.Run(async () =>
             {                                
                 while (Uploading)
                 {
-                    if(ct.IsCancellationRequested)
+                    if (_ct.IsCancellationRequested)
                     {
                         return;
                     }
 
-                    int toBeRead = BufferSize;
-
-                    if (toBeRead > _fileSize - _currentByte)
-                    {
-                        toBeRead = _fileSize - _currentByte;
-                        Uploading = false;
-                        UploadComplete = true;
-                    }
-
-                    string buffer = await Runtime.InvokeAsync<string>("getSlice", "fileUploadPicker", _currentByte, toBeRead);
-                    buffer = buffer.Replace("data:application/octet-stream;base64,", "");
-                    byte[] byteBuffer = Convert.FromBase64String(buffer);
-
-                    byteBuffer.CopyTo(File, _currentByte);
-
-                    _currentByte = _currentByte + toBeRead;
+                    await ReadChunk();
 
                     _ = InvokeAsync(() =>
                     {
@@ -112,17 +94,36 @@ namespace Jpp.Common.Razor
                         ProgressPercentage = (int)Math.Round(p);
                         StateHasChanged();
                     });
-                }               
+                }
 
                 _ = InvokeAsync(() =>
                 {                    
                     if(UploadComplete)
                     {
                         OnUpload.InvokeAsync(File);
-                    }
-                    StateHasChanged();
+                    }                    
                 });
             });
+        }
+
+        private async Task ReadChunk()
+        {
+            int toBeRead = BUFFER_SIZE;
+
+            if (toBeRead > _fileSize - _currentByte)
+            {
+                toBeRead = _fileSize - _currentByte;
+                Uploading = false;
+                UploadComplete = true;
+            }
+
+            string buffer = await Runtime.InvokeAsync<string>("getSlice", "fileUploadPicker", _currentByte, toBeRead);
+            buffer = buffer.Replace("data:application/octet-stream;base64,", "");
+            byte[] byteBuffer = Convert.FromBase64String(buffer);
+
+            byteBuffer.CopyTo(File, _currentByte);
+
+            _currentByte = _currentByte + toBeRead;
         }
 
         public void FileChanged()
