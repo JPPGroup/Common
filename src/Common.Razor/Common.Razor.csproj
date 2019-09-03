@@ -11,6 +11,7 @@
     <Description>Common Razor Library containg re-useable razor components</Description>
     <RepositoryUrl>https://github.com/JPPGroup/Common</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
 
