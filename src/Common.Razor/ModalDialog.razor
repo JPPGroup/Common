@@ -1,0 +1,66 @@
+﻿@using Jpp.Common.Razor.Services
+
+
+<div class="bm-container @(IsVisible ? "bm-active" : string.Empty)">
+
+    <div class="bm-overlay" @onclick="CloseModal"></div>
+
+    <div class="blazor-modal">
+        <div class="bm-header">
+            <h3 class="bm-title">@Title</h3>            
+            <button type="button" class="bm-close" @onclick="CloseModal">
+                <span>&times;</span>
+            </button>            
+        </div>
+        <div class="bm-content">
+            @Content
+        </div>
+    </div>
+
+</div>
+
+@code {
+
+    [Inject] ModalService ModalService { get; set; }
+
+    protected bool IsVisible { get; set; }
+    protected string Title { get; set; }
+    protected RenderFragment Content { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        ModalService.OnShow += ShowModal;
+        ModalService.OnClose += CloseModal;
+    }
+
+    public void ShowModal(string title, RenderFragment content)
+    {
+        Title = title;
+        Content = content;
+        IsVisible = true;
+
+        _ = InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
+    }
+
+    public void CloseModal()
+    {
+        IsVisible = false;
+        Title = "";
+        Content = null;
+
+        _ = InvokeAsync(() =>
+        {
+            StateHasChanged();
+        });
+    }
+
+    public void Dispose()
+    {
+        ModalService.OnShow -= ShowModal;
+        ModalService.OnClose -= CloseModal;
+    }
+
+}

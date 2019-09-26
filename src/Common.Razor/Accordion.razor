@@ -1,30 +1,36 @@
-﻿<h3>Accordion</h3>
-
-<div>
-    <button class="collapsible-trigger" @onclick="ToggleCollapse">
-        <h3 class="pipeline-h3">@Title</h3>        
+﻿<div>
+    <button class="collapsible-trigger" @onclick="ToggleCollapse" style="@HeaderStyle">
+        @Header
     </button>
     <div class="collapsible-content @(Expanded ? "collapsible-active" : "collapsible-inactive")" style="max-height: @(AppliedMaxHeight)px;)">
         <div style="padding: 18px 0px">
-            @ChildContent
+            @Content
         </div>
     </div>
 </div>
 
-@code {
+@code {   
     [Parameter]
-    public string Title { get; set; }
+    public RenderFragment Header { get; set; }
 
     [Parameter]
-    public RenderFragment ChildContent { get; set; }
+    public RenderFragment Content { get; set; }
 
     [Parameter]
     public bool Expanded { get; set; }
 
     [Parameter]
-    public int MaxHeight { get; set; }
+    public int MaxHeight { get; set; } = 100;
+
+    [Parameter]
+    public string HeaderStyle { get; set; }
 
     public int AppliedMaxHeight { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        AppliedMaxHeight = Expanded ? MaxHeight : 0;
+    }
 
     protected void ToggleCollapse()
     {
