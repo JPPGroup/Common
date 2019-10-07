@@ -16,20 +16,22 @@ namespace Jpp.Common
             x = TrimEndChars(x);
             y = TrimEndChars(y);
 
-            bool xIsNumeric = IsNumeric(x);
-            bool yIsNumeric = IsNumeric(y);
+            bool xIsNumeric = int.TryParse(x, out var xInt);
+            bool yIsNumeric = int.TryParse(y, out var yInt);
+
+            int returnVal;
 
             if (xIsNumeric && yIsNumeric)
             {
-                if (Convert.ToInt32(x) > Convert.ToInt32(y)) return 1;
-                if (Convert.ToInt32(x) < Convert.ToInt32(y)) return -1;
-                if (Convert.ToInt32(x) == Convert.ToInt32(y)) return 0;
+                if (xInt > yInt) returnVal = 1;
+                else if (xInt < yInt) returnVal = - 1;
+                else returnVal = 0;  //xInt == yInt
             }
+            else if (xIsNumeric) returnVal = -1; //assumed y is not numeric
+            else if (yIsNumeric) returnVal = 1; //assumed x is not numeric
+            else returnVal = string.Compare(x, y, StringComparison.OrdinalIgnoreCase);
 
-            if (xIsNumeric && !yIsNumeric) return -1;
-            if (!xIsNumeric && yIsNumeric) return 1;
-
-            return string.Compare(x, y, StringComparison.OrdinalIgnoreCase);
+            return returnVal;
         }
 
         private static string TrimEndChars(string value)
@@ -44,11 +46,6 @@ namespace Jpp.Common
             }
 
             return value;
-        }
-
-        private static bool IsNumeric(string value)
-        {
-            return int.TryParse(value, out _);
         }
     }
 }
