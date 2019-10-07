@@ -11,6 +11,7 @@ trigger:
   paths:
     include:
     - src/Common.Razor/*
+    - tests/Common.Razor.Tests/*
 
 pool:
   vmImage: 'Ubuntu-16.04'
@@ -28,6 +29,12 @@ steps:
     command: 'build'
     projects: 'src/Common.Razor/Common.Razor.csproj'
     arguments: '/p:Configuration=$(BuildConfiguration) /p:PackageVersion=$(Build.BuildNumber)'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: 'tests/Common.Razor.Tests/Common.Razor.Tests.csproj'
+    arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'  
 
 - task: CopyFiles@2
   inputs:

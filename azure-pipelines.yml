@@ -11,6 +11,7 @@ trigger:
   paths:
     include:
     - src/Common/*
+    - tests/Common.Tests/*
 
 pool:
   vmImage: 'Ubuntu-16.04'
@@ -28,7 +29,13 @@ steps:
     command: 'build'
     projects: 'src/Common/Common.csproj'
     arguments: '/p:Configuration=$(BuildConfiguration) /p:PackageVersion=$(Build.BuildNumber)'
-
+    
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: 'tests/Common.Tests/Common.Tests.csproj'
+    arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'  
+    
 - task: CopyFiles@2
   inputs:
     Contents: '**/Jpp.Common.*.nupkg'
