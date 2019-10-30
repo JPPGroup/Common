@@ -36,7 +36,8 @@ namespace Jpp.Common
         {
             if (string.IsNullOrEmpty(value)) return value;
 
-            string newValue = value.Replace("ENQ", "");
+            string newValue = value.Replace(" ", "");
+            newValue = newValue.Replace("ENQ", "");
             if (!char.IsDigit(newValue[newValue.Length - 1]) && char.IsDigit(newValue[newValue.Length - 2]))
             {
                 return newValue.Substring(0, newValue.Length - 1);
