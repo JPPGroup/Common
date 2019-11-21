@@ -1,0 +1,59 @@
+# .NET Desktop
+# Build and run tests for .NET Desktop or Windows classic desktop solutions.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
+name: $(common-razor)$(rev:.r)
+
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - src/Common.Razor/*
+
+pr: none
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:  
+- group: versions
+- name: buildPlatform
+  value: 'Any CPU'
+- name: BuildConfiguration
+  value: 'Release'
+
+steps:
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    projects: 'src/Common.Razor/Common.Razor.csproj'
+    arguments: '/p:Configuration=$(BuildConfiguration) /p:PackageVersion=$(Build.BuildNumber)'
+    
+- task: VSTest@2
+  inputs:
+    testSelector: 'testAssemblies' # Options: testAssemblies, testPlan, testRun
+    testAssemblyVer2: |
+      **\*Tests.dll
+      !**\*TestAdapter.dll
+      !**\obj\** 
+      !**\testhost.dll
+    searchFolder: '$(System.DefaultWorkingDirectory)' 
+    runSettingsFile: 'tests\default.runsettings'
+    #overrideTestrunParameters: >
+    #  -BaseUrl group.cluster.jppuk.net
+    runInParallel: True
+    codeCoverageEnabled: True
+
+- task: CopyFiles@2
+  inputs:
+    Contents: '**/Jpp.Common.Razor.*.nupkg'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+
