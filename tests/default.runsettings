@@ -1,0 +1,7 @@
+<RunSettings>
+  <RunConfiguration>
+    <TargetFrameworkVersion>.NETCoreApp,Version=v3.0</TargetFrameworkVersion>
+  </RunConfiguration>
+  <TestRunParameters>
+  </TestRunParameters>
+</RunSettings>
