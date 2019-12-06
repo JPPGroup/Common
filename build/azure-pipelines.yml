@@ -31,6 +31,12 @@ steps:
     projects: 'src/Common/Common.csproj'
     arguments: '/p:Configuration=$(BuildConfiguration) /p:PackageVersion=$(Build.BuildNumber)'
     
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    projects: 'tests/Common.Tests/Common.Tests.csproj'
+    arguments: '/p:Configuration=$(BuildConfiguration)'
+    
 - task: VSTest@2
   inputs:
     testSelector: 'testAssemblies' # Options: testAssemblies, testPlan, testRun
