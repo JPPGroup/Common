@@ -28,7 +28,7 @@ steps:
   inputs:
     command: 'build'
     projects: 'tests/Common.Tests/Common.Tests.csproj'
-    arguments: '/p:Configuration=$(BuildConfiguration;GeneratePackageOnBuild=false'
+    arguments: '/p:Configuration=$(BuildConfiguration);GeneratePackageOnBuild=false'
     
 - task: VSTest@2
   inputs:

@@ -29,7 +29,7 @@ steps:
   inputs:
     command: 'build'
     projects: 'src/Common/Common.csproj'
-    arguments: '/p:Configuration=$(BuildConfiguration;PackageVersion=$(Build.BuildNumber)'
+    arguments: '/p:Configuration=$(BuildConfiguration);PackageVersion=$(Build.BuildNumber)'
     
 - task: DotNetCoreCLI@2
   inputs:
