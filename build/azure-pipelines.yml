@@ -29,13 +29,13 @@ steps:
   inputs:
     command: 'build'
     projects: 'src/Common/Common.csproj'
-    arguments: '/p:Configuration=$(BuildConfiguration) /p:PackageVersion=$(Build.BuildNumber)'
+    arguments: '/p:Configuration=$(BuildConfiguration;PackageVersion=$(Build.BuildNumber)'
     
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
     projects: 'tests/Common.Tests/Common.Tests.csproj'
-    arguments: '/p:Configuration=$(BuildConfiguration)'
+    arguments: '/p:Configuration=$(BuildConfiguration);GeneratePackageOnBuild=false'
     
 - task: VSTest@2
   inputs:
