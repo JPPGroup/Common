@@ -2,7 +2,7 @@
     <button class="collapsible-trigger" @onclick="ToggleCollapse" style="@HeaderStyle">
         @Header
     </button>
-    <div class="collapsible-content @(Expanded ? "collapsible-active" : "collapsible-inactive")" style="max-height: @(AppliedMaxHeight)px;)">
+    <div class="collapsible-content @(Expanded ? "collapsible-active" : "collapsible-inactive")" style="max-height: @(AppliedMaxHeight)px;">
         <div style="padding: 18px 0px">
             @Content
         </div>
@@ -25,9 +25,9 @@
     [Parameter]
     public string HeaderStyle { get; set; }
 
-    public int AppliedMaxHeight { get; set; }
+    public int AppliedMaxHeight { get; private set; }
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
         AppliedMaxHeight = Expanded ? MaxHeight : 0;
     }
