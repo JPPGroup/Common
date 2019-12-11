@@ -27,8 +27,8 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
-    projects: 'src/Common.Razor/Common.Razor.csproj'
-    arguments: '/p:Configuration=$(BuildConfiguration)'
+    projects: 'tests/Common.Razor.Tests/Common.Razor.Tests.csproj'
+    arguments: '/p:Configuration=$(BuildConfiguration);GeneratePackageOnBuild=false'
     
 - task: VSTest@2
   inputs:

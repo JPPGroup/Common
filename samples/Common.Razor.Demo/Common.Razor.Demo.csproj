@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Common.Razor\Common.Razor.csproj" />
+    <ProjectReference Include="..\..\src\Common.Razor\Common.Razor.csproj" />
   </ItemGroup>
 
 </Project>
