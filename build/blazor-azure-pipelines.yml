@@ -26,11 +26,18 @@ variables:
   value: 'Release'
 
 steps:
+steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
     projects: 'src/Common.Razor/Common.Razor.csproj'
-    arguments: '/p:Configuration=$(BuildConfiguration) /p:PackageVersion=$(Build.BuildNumber)'
+    arguments: '/p:Configuration=$(BuildConfiguration);PackageVersion=$(Build.BuildNumber)'
+    
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    projects: 'tests/Common.Razor.Tests/Common.Razor.Tests.csproj'
+    arguments: '/p:Configuration=$(BuildConfiguration);GeneratePackageOnBuild=false'
     
 - task: VSTest@2
   inputs:
@@ -46,12 +53,6 @@ steps:
     #  -BaseUrl group.cluster.jppuk.net
     runInParallel: True
     codeCoverageEnabled: True
-
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'test'
-    projects: 'tests/Common.Razor.Tests/Common.Razor.Tests.csproj'
-    arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'  
 
 - task: CopyFiles@2
   inputs:
