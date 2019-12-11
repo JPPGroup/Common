@@ -26,7 +26,6 @@ variables:
   value: 'Release'
 
 steps:
-steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
