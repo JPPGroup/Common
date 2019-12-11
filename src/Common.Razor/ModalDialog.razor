@@ -39,10 +39,7 @@
         Content = content;
         IsVisible = true;
 
-        _ = InvokeAsync(() =>
-        {
-            StateHasChanged();
-        });
+        _ = InvokeAsync(StateHasChanged);
     }
 
     public void CloseModal()
@@ -51,10 +48,7 @@
         Title = "";
         Content = null;
 
-        _ = InvokeAsync(() =>
-        {
-            StateHasChanged();
-        });
+        _ = InvokeAsync(StateHasChanged);
     }
 
     public void Dispose()
