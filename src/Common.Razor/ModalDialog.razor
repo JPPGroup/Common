@@ -3,12 +3,12 @@
 
 <div class="bm-container @(IsVisible ? "bm-active" : string.Empty)">
 
-    <div class="bm-overlay" @onclick="CloseModal"></div>
+    <div class="bm-overlay" @onclick="() => ModalService.Close()"></div>
 
     <div class="blazor-modal">
         <div class="bm-header">
             <h3 class="bm-title">@Title</h3>            
-            <button type="button" class="bm-close" @onclick="CloseModal">
+            <button type="button" class="bm-close" @onclick="() => ModalService.Close()">
                 <span>&times;</span>
             </button>            
         </div>
@@ -47,7 +47,7 @@
         IsVisible = false;
         Title = "";
         Content = null;
-
+        
         _ = InvokeAsync(StateHasChanged);
     }
 
