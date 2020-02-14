@@ -3,6 +3,11 @@
     return file.size;    
 };
 
+function getFileName(fileInput) {
+    var file = document.getElementById(fileInput).files[0];
+    return file.name;
+};
+
 async function getSlice(fileInput, start, end) {
     return new Promise((resolve, reject) => {      
     

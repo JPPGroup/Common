@@ -14,7 +14,7 @@ namespace Jpp.Common.Razor
         public byte[] File { get; set; }
 
         [Parameter]
-        public EventCallback<byte[]> OnUpload { get; set; }
+        public EventCallback<FileUploadEventArgs> OnUpload { get; set; }
 
         [Inject]
         public IJSRuntime Runtime { get; set; }
@@ -37,6 +37,8 @@ namespace Jpp.Common.Razor
 
         private int _currentByte, _fileSize;
 
+        private string _filename;
+
         public FileUploadBase()
         {            
         }
@@ -47,6 +49,7 @@ namespace Jpp.Common.Razor
             UploadComplete = false;
             _cts = new CancellationTokenSource();
             _fileSize = await Runtime.InvokeAsync<int>("getFileSize", "fileUploadPicker");
+            _filename = await Runtime.InvokeAsync<string>("getFileName", "fileUploadPicker");
             File = new byte[_fileSize];
             _currentByte = 0;
             Uploading = true;
@@ -100,7 +103,12 @@ namespace Jpp.Common.Razor
                 {                    
                     if(UploadComplete)
                     {
-                        OnUpload.InvokeAsync(File);
+                        FileUploadEventArgs args = new FileUploadEventArgs()
+                        {
+                            Filename = _filename,
+                            Data = File
+                        };
+                        OnUpload.InvokeAsync(args);
                     }                    
                 });
             });
@@ -131,5 +139,11 @@ namespace Jpp.Common.Razor
             UploadComplete = false;
             UploadButtonHidden = false;
         }
+    }
+
+    public struct FileUploadEventArgs
+    {
+        public string Filename { get; set; }
+        public byte[] Data { get; set; }
     }
 }
