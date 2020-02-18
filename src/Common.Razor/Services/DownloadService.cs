@@ -16,10 +16,20 @@ namespace Jpp.Common.Razor.Services
 
         public void Register(string filename, byte[] data)
         {
-            byte[] header = Encoding.UTF8.GetBytes("base64,");
-            IEnumerable<byte> rv = header.Concat(data);
+            MemoryStream ms;
 
-            MemoryStream ms = new MemoryStream(rv.ToArray());
+            if (filename.Contains(".zip"))
+            {
+                ms = new MemoryStream(data);
+            }
+            else
+            {
+                byte[] header = Encoding.UTF8.GetBytes("base64,");
+                IEnumerable<byte> rv = header.Concat(data);
+
+                ms = new MemoryStream(rv.ToArray());
+            }
+
             _registeredFiles[filename] = ms;
         }
 
