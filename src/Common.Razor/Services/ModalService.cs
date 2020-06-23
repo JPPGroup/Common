@@ -32,17 +32,34 @@ namespace Jpp.Common.Razor.Services
             OnShow?.Invoke(title, content);
         }
 
-        public async Task<bool> ShowAsync(string title, Type contentType, params KeyValuePair<string, object>[] attributes)
+        public async Task<ModalResult> ShowAsync(string title, Type contentType, params KeyValuePair<string, object>[] attributes)
         {
             Show(title, contentType, attributes);
             _awaitFlag = new TaskCompletionSource<bool>();
-            return await _awaitFlag.Task;
+            
+            bool modalSuccess = await _awaitFlag.Task;
+            _result.Success = modalSuccess; 
+            return _result;
         }
 
-        public void Close(bool success = false)
+        private ModalResult _result;
+        
+
+        public void Close(bool success = false, params KeyValuePair<string,object>[] Results)
         {
+            _result = new ModalResult();
+            foreach (KeyValuePair<string, object> keyValuePair in Results)
+            {
+                _result.Results.Add(keyValuePair.Key, keyValuePair.Value);
+            }
             OnClose?.Invoke();
-            _awaitFlag.SetResult(success);
+            _awaitFlag?.SetResult(success);
         }
+    }
+
+    public class ModalResult
+    {
+        public bool Success { get; set; }
+        public Dictionary<string, object> Results { get; set; } = new Dictionary<string, object>();
     }
 }
