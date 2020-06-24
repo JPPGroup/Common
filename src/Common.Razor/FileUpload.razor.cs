@@ -39,8 +39,16 @@ namespace Jpp.Common.Razor
 
         private string _filename;
 
+        protected string Id { get; set; }
+
         public FileUploadBase()
         {            
+        }
+
+        protected override void OnInitialized()
+        {
+            Id = Guid.NewGuid().ToString();
+            base.OnInitialized();
         }
 
         public async void UploadFile()
@@ -48,8 +56,8 @@ namespace Jpp.Common.Razor
             UploadButtonHidden = true;
             UploadComplete = false;
             _cts = new CancellationTokenSource();
-            _fileSize = await Runtime.InvokeAsync<int>("getFileSize", "fileUploadPicker");
-            _filename = await Runtime.InvokeAsync<string>("getFileName", "fileUploadPicker");
+            _fileSize = await Runtime.InvokeAsync<int>("getFileSize", Id);
+            _filename = await Runtime.InvokeAsync<string>("getFileName", Id);
             File = new byte[_fileSize];
             _currentByte = 0;
             Uploading = true;
@@ -74,7 +82,7 @@ namespace Jpp.Common.Razor
         {
             _cts.Cancel();
             Uploading = false;
-            await Runtime.InvokeAsync<object>("clearInput", "fileUploadPicker");
+            await Runtime.InvokeAsync<object>("clearInput", Id);
         }
 
         private void Upload()
@@ -125,7 +133,7 @@ namespace Jpp.Common.Razor
                 UploadComplete = true;
             }
 
-            string buffer = await Runtime.InvokeAsync<string>("getSlice", "fileUploadPicker", _currentByte, toBeRead);
+            string buffer = await Runtime.InvokeAsync<string>("getSlice", Id, _currentByte, toBeRead);
             buffer = buffer.Replace("data:application/octet-stream;base64,", "");
             byte[] byteBuffer = Convert.FromBase64String(buffer);
 
