@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Jpp.Common</RootNamespace>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageId>Jpp.Common</PackageId>
     <Authors>JPP Consulting</Authors>
     <Company>JPP Consulting</Company>
@@ -11,6 +11,7 @@
     <Description>Common Code Library containg re-useable helper classes</Description>
     <RepositoryUrl>https://github.com/JPPGroup/Common</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <Version>0.4.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
