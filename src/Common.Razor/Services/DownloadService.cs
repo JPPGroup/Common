@@ -33,11 +33,30 @@ namespace Jpp.Common.Razor.Services
             _registeredFiles[filename] = ms;
         }
 
-        public MemoryStream Get(string filename)
+        public (MemoryStream, string) Get(string filename)
         {
             MemoryStream result = _registeredFiles[filename];
             _registeredFiles.Remove(filename);
-            return result;
+
+            string end = filename.Substring(filename.IndexOf('.'));
+            string contentType = "application/octet-stream";
+            switch (end)
+            {
+                case "zip":
+                    contentType = "application/zip";
+                    break;
+
+                case "pdf":
+                    contentType = "application/pdf";
+                    break;
+            }
+
+            return (result, contentType);
+        }
+
+        public bool Contains(string filename)
+        {
+            return _registeredFiles.ContainsKey(filename);
         }
     }
 }
