@@ -11,7 +11,7 @@
     <Description>Common Code Library containg re-useable helper classes</Description>
     <RepositoryUrl>https://github.com/JPPGroup/Common</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Version>0.4.0</Version>
+    <Version>0.4.1</Version>
     <LangVersion>8.0</LangVersion>
     <Platforms>x64</Platforms>
     <Configurations>Debug;Release;DebugLocal;ReleaseLocal</Configurations>
